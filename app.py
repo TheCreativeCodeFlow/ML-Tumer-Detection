@@ -25,17 +25,18 @@ except ImportError:
     PDF_AVAILABLE = False
 
 # UI Config
-st.set_page_config(page_title="Trauma Detection (Medical Images)", layout="wide", initial_sidebar_state="expanded")
-
-# Theme toggle
-if "dark" not in st.session_state:
-    st.session_state.dark = True
+st.set_page_config(
+    page_title="Tumor Detection (Medical Images)", 
+    layout="wide", 
+    initial_sidebar_state="expanded",
+    menu_items={
+        'About': "Medical Tumor Detection AI System - For research and educational purposes only."
+    }
+)
 
 with st.sidebar:
-    st.title("Trauma Detection")
-    st.markdown("Minimal, explainable AI for medical image trauma detection")
-    mode = st.selectbox("Theme", ["Dark", "Light"], index=0)
-    st.session_state.dark = (mode == "Dark")
+    st.title("🩺 Tumor Detection")
+    st.markdown("Minimal, explainable AI for medical image tumor detection")
 
     st.markdown("---")
     page = st.radio("Navigation", ["Home", "Upload & Detect", "Model Insights", "About AI Model"])
@@ -49,8 +50,8 @@ MODEL_OPTIONS = {
 }
 
 MODEL_DESCRIPTIONS = {
-    "Hemgg/bone-fracture-detection-using-xray": "Specialized for detecting bone fractures and trauma in X-ray images",
-    "DifeiT/rsna-intracranial-hemorrhage-detection": "Expert model for identifying hemorrhages and head trauma",
+    "Hemgg/bone-fracture-detection-using-xray": "Specialized for detecting bone fractures and skeletal abnormalities in X-ray images",
+    "DifeiT/rsna-intracranial-hemorrhage-detection": "Expert model for identifying hemorrhages and head injuries",
     "ShimaGh/Brain-Tumor-Detection": "Optimized for brain tumor localization and detection",
     "hugginglearners/brain-tumor-detection-mri": "General MRI-based brain abnormality classification"
 }
@@ -86,7 +87,7 @@ def get_handler(name):
 
 def create_results_dashboard(img, cam_img, pred, conf, probs, handler, timestamp, patient_id):
     """Create comprehensive results dashboard with enhanced medical visualizations."""
-    st.header("🎩 Medical Analysis Results Dashboard")
+    st.header("🩺 Medical Analysis Results Dashboard")
     
     # Medical-specific severity assessment
     if "fracture" in pred.lower():
@@ -294,7 +295,7 @@ def create_history_view(conn):
             st.download_button(
                 label="Download CSV",
                 data=csv,
-                file_name=f"trauma_analysis_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+                file_name=f"tumor_analysis_history_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
                 mime="text/csv"
             )
 
@@ -319,7 +320,7 @@ def create_export_section(conn):
         st.download_button(
             label="📥 Download Full History (CSV)",
             data=csv_data,
-            file_name=f"trauma_detection_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+            file_name=f"tumor_detection_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
             mime="text/csv"
         )
         
@@ -328,7 +329,7 @@ def create_export_section(conn):
         st.download_button(
             label="📥 Download as JSON",
             data=json_data,
-            file_name=f"trauma_detection_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+            file_name=f"tumor_detection_data_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
             mime="application/json"
         )
     
@@ -346,7 +347,7 @@ def create_export_section(conn):
             st.download_button(
                 label="📄 Download Summary Report",
                 data=summary_report,
-                file_name=f"trauma_detection_summary_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                file_name=f"tumor_detection_summary_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
                 mime="text/plain"
             )
 
@@ -418,7 +419,7 @@ def generate_detailed_pdf_report(analysis_id, conn):
         content = []
         
         # Title
-        content.append(Paragraph("🩺 TRAUMA DETECTION ANALYSIS REPORT", title_style))
+        content.append(Paragraph("🩺 TUMOR DETECTION ANALYSIS REPORT", title_style))
         content.append(Spacer(1, 20))
         
         # Patient Information
@@ -547,7 +548,7 @@ def generate_detailed_pdf_report(analysis_id, conn):
             alignment=TA_CENTER,
             textColor=colors.HexColor('#7F8C8D')
         )
-        content.append(Paragraph(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Trauma Detection AI System", footer_style))
+        content.append(Paragraph(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Tumor Detection AI System", footer_style))
         
         # Build PDF
         doc.build(content)
@@ -585,7 +586,7 @@ def generate_summary_pdf_report(df, include_charts=True, include_images=False):
         content = []
         
         # Title
-        content.append(Paragraph("📊 TRAUMA DETECTION COMPREHENSIVE SUMMARY REPORT", title_style))
+        content.append(Paragraph("📊 TUMOR DETECTION COMPREHENSIVE SUMMARY REPORT", title_style))
         content.append(Spacer(1, 20))
         
         # Executive Summary
@@ -706,7 +707,7 @@ def generate_summary_pdf_report(df, include_charts=True, include_images=False):
         
         disclaimer_text = """
         <b>For Research and Educational Purposes Only</b><br/><br/>
-        This comprehensive analysis report is generated from AI-based trauma detection 
+        This comprehensive analysis report is generated from AI-based tumor detection 
         system data for research and educational purposes only. The findings and statistics 
         presented should not be used for clinical decision-making without proper medical 
         supervision and validation.<br/><br/>
@@ -727,7 +728,7 @@ def generate_summary_pdf_report(df, include_charts=True, include_images=False):
             alignment=TA_CENTER,
             textColor=colors.HexColor('#7F8C8D')
         )
-        content.append(Paragraph(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Trauma Detection AI System", footer_style))
+        content.append(Paragraph(f"Generated on {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Tumor Detection AI System", footer_style))
         
         # Build PDF
         doc.build(content)
@@ -741,7 +742,7 @@ def generate_summary_pdf_report(df, include_charts=True, include_images=False):
 def generate_summary_report(df):
     """Generate a text summary report."""
     report = f"""
-TRAUMA DETECTION ANALYSIS SUMMARY REPORT
+TUMOR DETECTION ANALYSIS SUMMARY REPORT
 ========================================
 Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
@@ -782,7 +783,7 @@ def generate_summary_charts(df):
     """Generate summary charts for PDF inclusion."""
     try:
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
-        fig.suptitle('Trauma Detection Analytics Summary', fontsize=16)
+        fig.suptitle('Tumor Detection Analytics Summary', fontsize=16)
         
         # Prediction distribution pie chart
         pred_counts = df['prediction'].value_counts()
@@ -844,12 +845,12 @@ except sqlite3.OperationalError:
 
 
 if page == "Home":
-    st.title("Trauma Detection — Home")
-    st.write("Upload X-ray, MRI or DICOM images and get real-time trauma detection with Grad-CAM explainability.")
+    st.title("Tumor Detection — Home")
+    st.write("Upload X-ray, MRI or DICOM images and get real-time tumor detection with Grad-CAM explainability.")
     st.write("Use the sidebar to switch models and navigation.")
 
 elif page == "Upload & Detect":
-    st.title("🩺 Trauma Detection Analysis")
+    st.title("🩺 Tumor Detection Analysis")
     
     # Create tabs for different sections
     detect_tab, history_tab, export_tab = st.tabs(["🔍 Detect", "📊 History", "📄 Export"])

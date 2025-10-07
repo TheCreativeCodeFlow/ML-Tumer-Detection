@@ -40,7 +40,7 @@ try:
         content = []
         content.append(Paragraph("🩺 TEST PDF GENERATION", title_style))
         content.append(Spacer(1, 20))
-        content.append(Paragraph("This is a test PDF to verify the functionality works correctly.", styles['Normal']))
+        content.append(Paragraph("This is a test PDF to verify the functionality works correctly for the Medical Tumor Detection application.", styles['Normal']))
         
         # Test table
         test_data = [
@@ -48,7 +48,8 @@ try:
             ['PDF Generation', '✅ Working'],
             ['ReportLab', '✅ Installed'],
             ['Tables', '✅ Functional'],
-            ['Styling', '✅ Applied']
+            ['Styling', '✅ Applied'],
+            ['Medical Reports', '✅ Ready']
         ]
         
         test_table = Table(test_data, colWidths=[2*inch, 2*inch])
@@ -83,6 +84,8 @@ except ImportError as e:
 
 if __name__ == "__main__":
     print("🧪 Testing PDF Generation Functionality...")
+    print("🩺 Medical Tumor Detection Report System")
+    print()
     
     # Test the PDF generation
     if test_pdf_generation():
@@ -99,3 +102,5 @@ if __name__ == "__main__":
         print("Navigate to the 'Export' tab to generate PDF reports.")
     else:
         print("❌ PDF functionality test failed!")
+        print("💡 Make sure reportlab and matplotlib are installed:")
+        print("   pip install reportlab matplotlib")

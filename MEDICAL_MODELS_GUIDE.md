@@ -1,4 +1,4 @@
-# Medical Trauma Detection Models - Quick Reference Guide
+# Medical Tumor Detection Models - Quick Reference Guide
 
 ## 🏥 Specialized Medical AI Models
 
@@ -7,7 +7,7 @@
 - **Primary Use**: X-ray bone fracture detection
 - **Image Types**: X-ray images of bones, limbs, skeletal structures
 - **Clinical Applications**: 
-  - Emergency medicine trauma assessment
+  - Emergency medicine skeletal assessment
   - Orthopedic screening
   - Sports medicine injury evaluation
 - **Output**: Fracture Detected / No Fracture
@@ -15,7 +15,7 @@
 
 ### 🧠 Intracranial Hemorrhage Detection Model  
 - **Model ID**: `DifeiT/rsna-intracranial-hemorrhage-detection`
-- **Primary Use**: Head trauma and hemorrhage detection
+- **Primary Use**: Head injury and hemorrhage detection
 - **Image Types**: Head CT scans, brain imaging
 - **Clinical Applications**:
   - Emergency neurology
@@ -67,7 +67,7 @@
 ## 🏥 Clinical Workflow Integration
 
 ### Emergency Department:
-1. **Trauma Cases**: Start with Bone Fracture Detection for skeletal injuries
+1. **Injury Cases**: Start with Bone Fracture Detection for skeletal injuries
 2. **Head Injuries**: Use Intracranial Hemorrhage Detection for rapid assessment
 3. **Neurological Symptoms**: Brain Tumor Detection for mass lesion screening
 

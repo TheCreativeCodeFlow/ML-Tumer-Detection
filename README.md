@@ -1,17 +1,17 @@
-# Medical Trauma Detection — Streamlit AI Application
+# Medical Tumor Detection — Streamlit AI Application
 
-A specialized AI application for medical trauma detection using four expert Hugging Face models optimized for different types of medical imaging analysis.
+A specialized AI application for medical tumor detection using four expert Hugging Face models optimized for different types of medical imaging analysis.
 
 ## 🏥 Specialized Medical Models
 
 ### 🦴 Bone Fracture Detection (X-ray)
 - **Model**: `Hemgg/bone-fracture-detection-using-xray`
-- **Specialty**: Detecting bone fractures, breaks, and skeletal trauma in X-ray images
-- **Best for**: Emergency medicine, orthopedics, trauma assessment
+- **Specialty**: Detecting bone fractures, breaks, and skeletal abnormalities in X-ray images
+- **Best for**: Emergency medicine, orthopedics, skeletal assessment
 
 ### 🧠 Intracranial Hemorrhage Detection  
 - **Model**: `DifeiT/rsna-intracranial-hemorrhage-detection`
-- **Specialty**: Identifying hemorrhages and head trauma in CT scans
+- **Specialty**: Identifying hemorrhages and head injuries in CT scans
 - **Best for**: Emergency neurology, stroke assessment, head injury evaluation
 
 ### 🔬 Brain Tumor Detection
@@ -34,10 +34,11 @@ A specialized AI application for medical trauma detection using four expert Hugg
 - **Analytics Dashboard**: Performance metrics and trend analysis
 
 ## 🏥 Clinical Applications
-- **Emergency Medicine**: Rapid trauma assessment and triage
+- **Emergency Medicine**: Rapid tumor and abnormality assessment and triage
 - **Radiology**: Second opinion and screening assistance  
 - **Orthopedics**: Bone fracture detection and classification
 - **Neurology**: Brain abnormality detection and hemorrhage screening
+- **Oncology**: Tumor detection and monitoring
 - **Research**: Medical imaging algorithm development and validation
 
 ## 📋 Export & Reporting
@@ -70,10 +71,10 @@ streamlit run app.py
 ### Docker Deployment
 ```bash
 # Build container
-docker build -t medical-trauma-detection .
+docker build -t medical-tumor-detection .
 
 # Run container
-docker run -p 8501:8501 medical-trauma-detection
+docker run -p 8501:8501 medical-tumor-detection
 ```
 
 ### Model Validation

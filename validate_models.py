@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Model Validation Script for Medical Trauma Detection Models
+Model Validation Script for Medical Tumor Detection Models
 Tests the four specialized Hugging Face models for medical image analysis
 """
 
@@ -11,7 +11,7 @@ from datetime import datetime
 # Add current directory to path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-print("🩺 Medical Trauma Detection Model Validation")
+print("🩺 Medical Tumor Detection Model Validation")
 print("=" * 50)
 print(f"Validation started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 print()
@@ -53,14 +53,15 @@ for model_display, model_id in MEDICAL_MODELS.items():
             # Test Grad-CAM
             try:
                 cam_result = handler.gradcam(dummy_input)
-                print(f"  🔍 Grad-CAM test: Generated {cam_result.shape if hasattr(cam_result, 'shape') else 'result'}")
+                print(f"  🔍 Grad-CAM test: Generated {cam_result.shape if hasattr(cam_result, 'shape') else 'visualization'}")
             except Exception as cam_error:
-                print(f"  ⚠️ Grad-CAM test: {cam_error}")
+                print(f"  ⚠️ Grad-CAM test failed: {cam_error}")
             
             print(f"  ✅ Model validation: PASSED")
             
         except Exception as pred_error:
             print(f"  ❌ Prediction test failed: {pred_error}")
+            print(f"  💡 This may indicate the model needs special configuration or has compatibility issues")
             
     except Exception as load_error:
         print(f"  ❌ Model loading failed: {load_error}")
@@ -69,14 +70,19 @@ for model_display, model_id in MEDICAL_MODELS.items():
         # Try direct transformers import
         try:
             from transformers import AutoModelForImageClassification, AutoFeatureExtractor
-            model = AutoModelForImageClassification.from_pretrained(model_id)
-            extractor = AutoFeatureExtractor.from_pretrained(model_id)
+            model = AutoModelForImageClassification.from_pretrained(model_id, trust_remote_code=True)
+            try:
+                extractor = AutoFeatureExtractor.from_pretrained(model_id)
+            except:
+                from transformers import AutoImageProcessor
+                extractor = AutoImageProcessor.from_pretrained(model_id)
             print(f"  ✅ Direct transformers loading: SUCCESS")
             print(f"  📊 Model config: {model.config.architectures if hasattr(model.config, 'architectures') else 'Unknown'}")
         except Exception as direct_error:
-            print(f"  ❌ Direct transformers loading: {direct_error}")
+            print(f"  ❌ Direct transformers loading failed: {direct_error}")
+            print(f"  💡 Model may require specific dependencies or authentication")
     
-    print("-" * 30)
+    print("-" * 50)
     print()
 
 print("📊 Model Validation Summary")
