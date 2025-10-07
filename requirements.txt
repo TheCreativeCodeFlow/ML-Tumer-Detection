@@ -1,0 +1,15 @@
+streamlit
+torch
+torchvision
+transformers
+pillow
+numpy
+pydicom
+timm
+pytorch-grad-cam
+plotly
+pandas
+sqlalchemy
+scikit-learn
+reportlab
+matplotlib
