@@ -41,19 +41,20 @@ with st.sidebar:
     st.markdown("---")
     page = st.radio("Navigation", ["Home", "Upload & Detect", "Model Insights", "About AI Model"])
 
-# Model selector
+# Model selector – Four tumor MRI classifiers
 MODEL_OPTIONS = {
-    "Bone Fracture Detection (X-ray)": "Hemgg/bone-fracture-detection-using-xray",
-    "Intracranial Hemorrhage Detection": "DifeiT/rsna-intracranial-hemorrhage-detection",
-    "Brain Tumor Detection": "ShimaGh/Brain-Tumor-Detection",
-    "MRI Brain Abnormality Classification": "hugginglearners/brain-tumor-detection-mri"
+    # Put a widely-available public model first to avoid initial load errors
+    "ViT Base Brain Tumor (sayakpaul)": "sayakpaul/vit-base-patch16-224-in21k-brain-tumor",
+    "ResNet50 Brain Tumor (pranavpsv)": "pranavpsv/ResNet50_brain_tumor_classification",
+    "CNN Brain Tumor (mohamedamjad)": "mohamedamjad/brain-tumor-mri-model",
+    "ViT Brain Tumor (akhaliq)": "akhaliq/brain-tumor-classification"
 }
 
 MODEL_DESCRIPTIONS = {
-    "Hemgg/bone-fracture-detection-using-xray": "Specialized for detecting bone fractures and skeletal abnormalities in X-ray images",
-    "DifeiT/rsna-intracranial-hemorrhage-detection": "Expert model for identifying hemorrhages and head injuries",
-    "ShimaGh/Brain-Tumor-Detection": "Optimized for brain tumor localization and detection",
-    "hugginglearners/brain-tumor-detection-mri": "General MRI-based brain abnormality classification"
+    "akhaliq/brain-tumor-classification": "ViT model fine-tuned to classify MRI brain images into tumor types (glioma, meningioma, pituitary, no tumor).",
+    "sayakpaul/vit-base-patch16-224-in21k-brain-tumor": "ViT-base model trained on the Kaggle Brain MRI dataset; reliable on CPU/GPU.",
+    "pranavpsv/ResNet50_brain_tumor_classification": "ResNet50-based classifier; solid baseline and relatively fast on CPU.",
+    "mohamedamjad/brain-tumor-mri-model": "CNN-based model for tumor vs no-tumor; simple and easy to integrate."
 }
 
 if 'model_name' not in st.session_state:
@@ -73,12 +74,14 @@ with st.sidebar.expander("ℹ️ Model Information", expanded=False):
     st.markdown(f"**Description:** {MODEL_DESCRIPTIONS[st.session_state.model_name]}")
     
     # Model-specific recommendations
-    if "bone-fracture" in st.session_state.model_name:
-        st.info("📋 Best for: X-ray images of bones, limbs, and skeletal structures")
-    elif "hemorrhage" in st.session_state.model_name:
-        st.info("🧠 Best for: Head CT scans and intracranial imaging")
-    elif "tumor" in st.session_state.model_name:
-        st.info("🔬 Best for: Brain MRI and tumor detection imaging")
+    if "akhaliq/brain-tumor-classification" in st.session_state.model_name:
+        st.info("� Best for: MRI brain tumor multi-class (glioma/meningioma/pituitary/no tumor)")
+    elif "sayakpaul/vit-base-patch16-224-in21k-brain-tumor" in st.session_state.model_name:
+        st.info("🔬 Best for: Reliable ViT-base on Kaggle Brain MRI dataset")
+    elif "pranavpsv/ResNet50_brain_tumor_classification" in st.session_state.model_name:
+        st.info("🔬 Best for: ResNet50 baseline; CPU-friendly")
+    elif "mohamedamjad/brain-tumor-mri-model" in st.session_state.model_name:
+        st.info("🔬 Best for: Simple tumor vs no-tumor MRI screening")
 
 # Initialize model handler
 @st.cache_resource
@@ -138,12 +141,12 @@ def create_results_dashboard(img, cam_img, pred, conf, probs, handler, timestamp
     viz_col1, viz_col2 = st.columns(2)
     
     with viz_col1:
-        st.markdown("**Original Medical Image**")
-        st.image(img, use_column_width=True, caption="Input for analysis")
+        st.markdown("**Original MRI**")
+    st.image(img, width='stretch', caption="Original MRI")
     
     with viz_col2:
-        st.markdown("**AI Attention Map (Grad-CAM)**")
-        st.image(cam_img, use_column_width=True, caption="Areas of AI focus")
+        st.markdown("**Tumor Heatmap (Model Attention)**")
+    st.image(cam_img, width='stretch', caption="Red/Yellow: High attention, Blue/Green: Low attention")
     
     # Medical confidence analysis
     st.subheader("📈 Model Confidence Analysis")
@@ -959,7 +962,7 @@ elif page == "Model Insights":
 
 elif page == "About AI Model":
     st.title("🤖 About the AI Models")
-    st.write("This application uses four specialized Hugging Face models, each optimized for specific types of medical trauma detection.")
+    st.write("This application uses four Hugging Face models focused on brain tumor classification in MRI images.")
     
     # Model cards
     for display_name, model_id in MODEL_OPTIONS.items():
@@ -968,24 +971,14 @@ elif page == "About AI Model":
             
             with col1:
                 st.markdown(f"**Model ID:** `{model_id}`")
-                st.markdown(f"**Type:** {'X-ray Analysis' if 'xray' in model_id else 'MRI/CT Analysis'}")
+                st.markdown("**Type:** MRI Brain Tumor Classification")
                 
             with col2:
                 st.markdown(f"**Description:** {MODEL_DESCRIPTIONS[model_id]}")
                 
                 # Specific use cases
-                if "bone-fracture" in model_id:
-                    st.markdown("**Detects:** Bone fractures, breaks, dislocations")
-                    st.markdown("**Image Types:** X-ray images of extremities, spine, pelvis")
-                elif "hemorrhage" in model_id:
-                    st.markdown("**Detects:** Intracranial bleeding, head trauma")
-                    st.markdown("**Image Types:** Head CT scans, brain imaging")
-                elif "Brain-Tumor" in model_id:
-                    st.markdown("**Detects:** Brain tumors, masses, lesions")
-                    st.markdown("**Image Types:** Brain MRI, neuroimaging")
-                elif "brain-tumor-detection-mri" in model_id:
-                    st.markdown("**Detects:** General brain abnormalities")
-                    st.markdown("**Image Types:** MRI scans, brain imaging")
+                st.markdown("**Detects:** Brain tumors in MRI (multi-class or binary, depending on model)")
+                st.markdown("**Image Types:** Brain MRI (T1/T2 as available; dataset-dependent)")
     
     st.markdown("---")
     st.subheader("🔬 Clinical Applications")
